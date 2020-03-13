@@ -1,0 +1,37 @@
+---
+title: "Entendiento regresion lineal v1"
+author: "Ricardo"
+date: "March 13, 2020"
+output: html_document
+runtime: shiny
+---
+
+## Entendiento regresion lineal
+Mueve los valores de los parametros Constante y Educacion, para encontrar la linea que mejor se ajusta 
+a tus datos.
+
+```{r eruptions, echo=FALSE}
+n1 = 100
+education  = rpois(n = n1, lambda = 10)
+#pobre = rbinom(n = n1, size = 1, prob = 0.7)
+rendimiento = 2 + 0.2 * education + rnorm(n = n1, mean = 0,  sd = 0.1)
+
+
+inputPanel(
+  sliderInput("b0", label = "Constante",
+              min = -5, max = 5, value = 0, step = 0.1),
+  sliderInput("b1", label = "Educacion",
+              min = 0, max = 1, value = 0.5, step = 0.05)
+)
+
+renderPlot({
+
+        y_hat  = input$b0 + input$b1 * education
+        error  = mean((y_hat - rendimiento)^2)
+        plot(education, rendimiento, main = paste('Error: ', error, sep = ''))
+        abline(input$b0, input$b1)
+})
+```
+
+
+
